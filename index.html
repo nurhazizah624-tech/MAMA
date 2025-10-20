@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAMA - Mobile Assistant for Mothers and Babies</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-pink: #FF6B9D;
+            --primary-blue: #4A90E2;
+            --light-pink: #FFE5EC;
+            --light-blue: #E3F2FD;
+            --dark-blue: #2C5F8D;
+            --gradient-pink-blue: linear-gradient(135deg, #FF6B9D 0%, #4A90E2 100%);
+            --gradient-light: linear-gradient(135deg, #FFE5EC 0%, #E3F2FD 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-pink-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text h1 {
+            background: var(--gradient-pink-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .logo-text p {
+            color: #666;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient-pink-blue);
+            transition: width 0.3s;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover:before {
+            width: 100%;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .coins-display {
+            background: var(--gradient-light);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .coin-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #fff;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .coin-amount {
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF6B9D 0%, #4A90E2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-login {
+            background: var(--gradient-pink-blue);
+            color: #fff;
+            padding: 0.7rem 1.8rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--primary-pink);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding: 180px 3rem 120px;
+            background: var(--gradient-light);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23FFE5EC" fill-opacity="0.5" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,117.3C1248,117,1344,139,1392,149.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.6;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h2 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--dark-blue);
+        }
+
+        .hero-text .highlight {
+            background: var(--gradient-pink-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: #555;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-pink-blue);
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 157, 0.4);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--primary-pink);
+            border: 2px solid var(--primary-pink);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-pink);
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-illustration {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(255,107,157,0.1) 0%, rgba(74,144,226,0.1) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-illustration::before {
+            content: '👶';
+            font-size: 15rem;
+            position: absolute;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.1));
+        }
+
+        .floating-element {
+            position: absolute;
+            animation: floatAround 8s ease-in-out infinite;
+        }
+
+        @keyframes floatAround {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -10px) rotate(5deg); }
+            50% { transform: translate(-5px, -20px) rotate(-5deg); }
+            75% { transform: translate(-10px, -10px) rotate(3deg); }
+        }
+
+        .element-1 { top: 10%; left: 5%; font-size: 3rem; }
+        .element-2 { top: 20%; right: 10%; font-size: 2.5rem; }
+        .element-3 { bottom: 15%; left: 10%; font-size: 2.8rem; }
+        .element-4 { bottom: 25%; right: 5%; font-size: 3.2rem; }
+
+        /* Stats Section */
+        .stats {
+            background: var(--gradient-pink-blue);
+            padding: 3rem 3rem;
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            color: #fff;
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 3rem;
+            background: #fff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--light-pink);
+            color: var(--primary-pink);
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-pink-blue);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.2);
+            border-color: var(--light-pink);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            background: var(--gradient-light);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .feature-list li:before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-pink-blue);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .btn-feature {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: var(--gradient-light);
+            color: var(--primary-pink);
+            border: none;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-feature:hover {
+            background: var(--gradient-pink-blue);
+            color: #fff;
+        }
+
+        /* Store Section */
+        .store {
+            padding: 100px 3rem;
+            background: var(--gradient-light);
+            position: relative;
+        }
+
+        .store::before {
+            content: '🛍️';
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            font-size: 8rem;
+            opacity: 0.1;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            height: 250px;
+            background: var(--gradient-pink-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #fff;
+            color: var(--primary-pink);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .product-info {
+            padding: 1.8rem;
+        }
+
+        .product-category {
+            color: var(--primary-blue);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-info h4 {
+            font-size: 1.3rem;
+            color: var(--dark-blue);
+            margin-bottom: 0.8rem;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: #FFD700;
+        }
+
+        .product-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0;
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .price-tag {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+        }
+
+        .price-coins {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--light-pink);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--primary-pink);
+        }
+
+        /* Community Section */
+        .community {
+            padding: 100px 3rem;
+            background: #fff;
+        }
+
+        .community-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .community-image {
+            position: relative;
+            height: 500px;
+            background: var(--gradient-light);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15rem;
+            overflow: hidden;
+        }
+
+        .testimonial {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-pink-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .testimonial-info h5 {
+            color: var(--dark-blue);
+            font-weight: 600;
+        }
+
+        .testimonial-info p {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 3rem;
+            background: var(--dark-blue);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%234A90E2" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,117.3C1248,117,1344,139,1392,149.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .about-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .founder-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-top: 2rem;
+        }
+
+        .founder-card h4 {
+            color: var(--light-pink);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-pink-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 4rem 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-about h3 {
+            color: var(--primary-pink);
+            margin-bottom: 1rem;
+        }
+
+        .footer-about p {
+            line-height: 1.8;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-pink-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+        }
+
+        .footer-links h4 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-pink);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background: #fff;
+            margin: 3% auto;
+            padding: 0;
+            border-radius: 30px;
+            max-width: 900px;
+            position: relative;
+            animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: var(--gradient-pink-blue);
+            color: #fff;
+            padding: 2rem 2.5rem;
+            border-radius: 30px 30px 0 0;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .close {
+            position: absolute;
+            right: 2rem;
+            top: 2rem;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-illustration::before {
+                font-size: 10rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .community-grid,
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 1.5rem;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero {
+                padding: 140px 1.5rem 80px;
+            }
+
+            .hero-text h2 {
+                font-size: 2.2rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features,
+            .store,
+            .community,
+            .about {
+                padding: 60px 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-element {
+                font-size: 2rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-heart-pulse"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>MAMA</h1>
+                    <p>Mobile Assistant for Mothers & Babies</p>
+                </div>
+            </div>
+
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#beranda"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="#fitur"><i class="fas fa-star"></i> Fitur</a></li>
+                <li><a href="#store"><i class="fas fa-store"></i> Store</a></li>
+                <li><a href="#komunitas"><i class="fas fa-users"></i> Komunitas</a></li>
+                <li><a href="#tentang"><i class="fas fa-info-circle"></i> Tentang</a></li>
+            </ul>
+
+            <div class="user-section">
+                <div class="coins-display">
+                    <div class="coin-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.7rem; color: #666;">Koin Saya</div>
+                        <div class="coin-amount" id="userCoins">1,250</div>
+                    </div>
+                </div>
+                <a href="#" class="btn-login" onclick="openModal('loginModal')">
+                    <i class="fas fa-user"></i> Masuk
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="beranda">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h2>
+                    Selamat Datang di <span class="highlight">MAMA</span><br>
+                    Sahabat Digital <span class="highlight">Ibu & Bayi</span>
+                </h2>
+                <p>
+                    Platform kesehatan terlengkap untuk mendampingi perjalanan kehamilan 
+                    hingga tumbuh kembang buah hati Anda dengan teknologi AI terkini
+                </p>
+                <div class="hero-buttons">
+                    <a href="#fitur" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Jelajahi Fitur
+                    </a>
+                    <a href="#" class="btn btn-secondary" onclick="openModal('loginModal')">
+                        <i class="fas fa-user-plus"></i> Daftar Gratis
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="hero-illustration">
+                    <div class="floating-element element-1">💖</div>
+                    <div class="floating-element element-2">🍼</div>
+                    <div class="floating-element element-3">👶</div>
+                    <div class="floating-element element-4">🤱</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Ibu Terdaftar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100K+</div>
+                <div class="stat-label">Konsultasi Selesai</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Resep MPASI</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Layanan Online</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="fitur">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">✨ Fitur Unggulan</div>
+                <h2 class="section-title">4 Fitur Utama MAMA</h2>
+                <p class="section-subtitle">
+                    Solusi lengkap untuk kesehatan ibu dan bayi dengan teknologi terdepan
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1: Skrining Kesehatan -->
+                <div class="feature-card" onclick="openModal('screeningModal')">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #FFE5EC 0%, #FFC0D9 100%);">
+                        <span style="font-size: 3.5rem;">🩺</span>
+                    </div>
+                    <h3>Skrining Kesehatan</h3>
+                    <p>Pemeriksaan kesehatan berkala untuk ibu dan bayi dengan monitoring lengkap</p>
+                    <ul class="feature-list">
+                        <li>Pemantauan Kesehatan Ibu Hamil</li>
+                        <li>Deteksi Dini Komplikasi</li>
+                        <li>Status Gizi & Tumbuh Kembang</li>
+                        <li>Jadwal Imunisasi Lengkap</li>
+                        <li>Grafik Pertumbuhan Real-time</li>
+                    </ul>
+                    <button class="btn-feature">
+                        <i class="fas fa-arrow-right"></i> Mulai Skrining
+                    </button>
+                </div>
+
+                <!-- Feature 2: Konsultasi Online -->
+                <div class="feature-card" onclick="openModal('consultModal')">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #E3F2FD 0%, #90CAF9 100%);">
+                        <span style="font-size: 3.5rem;">💬</span>
+                    </div>
+                    <h3>Konsultasi Online</h3>
+                    <p>Chat langsung dengan dokter, bidan, dan ahli gizi profesional 24/7</p>
+                    <ul class="feature-list">
+                        <li>Dokter Spesialis Kandungan</li>
+                        <li>Bidan Berpengalaman</li>
+                        <li>Ahli Gizi & Nutrisi</li>
+                        <li>AI Chatbot Cerdas</li>
+                        <li>Video Call Konsultasi</li>
+                    </ul>
+                    <button class="btn-feature">
+                        <i class="fas fa-arrow-right"></i> Mulai Konsultasi
+                    </button>
+                </div>
+
+                <!-- Feature 3: MAMA Store -->
+                <div class="feature-card" onclick="scrollTo('store')">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #FFF9C4 0%, #FFE082 100%);">
+                        <span style="font-size: 3.5rem;">🛍️</span>
+                    </div>
+                    <h3>MAMA Store & Rental</h3>
+                    <p>Marketplace lengkap untuk membeli, menjual, dan menyewa perlengkapan bayi</p>
+                    <ul class="feature-list">
+                        <li>Produk Berkualitas Terjamin</li>
+                        <li>Sewa Perlengkapan Bayi</li>
+                        <li>Pembayaran dengan Koin</li>
+                        <li>Gratis Ongkir Reward</li>
+                        <li>Review & Rating Terpercaya</li>
+                    </ul>
+                    <button class="btn-feature">
+                        <i class="fas fa-arrow-right"></i> Belanja Sekarang
+                    </button>
+                </div>
+
+                <!-- Feature 4: MPASI & Komunitas -->
+                <div class="feature-card" onclick="openModal('mpasiModal')">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);">
+                        <span style="font-size: 3.5rem;">🍽️</span>
+                    </div>
+                    <h3>MPASI & Komunitas</h3>
+                    <p>Resep MPASI lengkap dan komunitas ibu untuk berbagi pengalaman</p>
+                    <ul class="feature-list">
+                        <li>500+ Resep MPASI Bergizi</li>
+                        <li>Panduan Sesuai Usia Bayi</li>
+                        <li>Forum Diskusi Ibu</li>
+                        <li>Share Tips & Trik</li>
+                        <li>Store Makanan Bayi</li>
+                    </ul>
+                    <button class="btn-feature">
+                        <i class="fas fa-arrow-right"></i> Lihat Resep
+                    </button>
+                </div>
+
+                <!-- Feature 5: Games & Audio -->
+                <div class="feature-card" onclick="openModal('gamesModal')">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #E8F5E9 0%, #A5D6A7 100%);">
+                        <span style="font-size: 3.5rem;">🎮</span>
+                    </div>
+                    <h3>Games & Audio Edukatif</h3>
+                    <p>Permainan edukatif, audio sosial, dan murotal islami untuk bayi</p>
+                    <ul class="feature-list">
+                        <li>Games Stimulasi Otak</li>
+                        <li>Audio Edukasi Interaktif</li>
+                        <li>Murotal Al-Qur'an</li>
+                        <li>Musik Klasik Bayi</li>
+                        <li>Reward Koin Setiap Aktivitas</li>
+                    </ul>
+                    <button class="btn-feature">
+                        <i class="fas fa-arrow-right"></i> Main Sekarang
+                    </button>
+                </div>
+
+                <!-- Feature 6: AI Assistant -->
+                <div class="feature-card" onclick="openModal('aiModal')">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #E0F2F1 0%, #80CBC4 100%);">
+                        <span style="font-size: 3.5rem;">🤖</span>
+                    </div>
+                    <h3>AI Assistant</h3>
+                    <p>Akses jurnal kesehatan, video edukasi, dan informasi terkini dengan AI</p>
+                    <ul class="feature-list">
+                        <li>Pencarian Jurnal Otomatis</li>
+                        <li>Video Edukasi HD</li>
+                        <li>Chatbot Cerdas 24/7</li>
+                        <li>Rekomendasi Personalized</li>
+                        <li>Update Info Kesehatan</li>
+                    </ul>
+                    <button class="btn-feature">
+                        <i class="fas fa-arrow-right"></i> Tanya AI
+                    </button>
+                </div>
+
+                <!-- Feature 7: Biodata & Monitoring -->
+                <div class="feature-card" onclick="openModal('biodataModal')">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #FFF3E0 0%, #FFCC80 100%);">
+                        <span style="font-size: 3.5rem;">📊</span>
+                    </div>
+                    <h3>Biodata & Monitoring</h3>
+                    <p>Pencatatan lengkap biodata bayi dan monitoring tumbuh kembang</p>
+                    <ul class="feature-list">
+                        <li>Data Lengkap Bayi</li>
+                        <li>Grafik TB & BB</li>
+                        <li>Status Gizi Otomatis</li>
+                        <li>Tracker Imunisasi</li>
+                        <li>Milestone Perkembangan</li>
+                    </ul>
+                    <button class="btn-feature">
+                        <i class="fas fa-arrow-right"></i> Update Data
+                    </button>
+                </div>
+
+                <!-- Feature 8: Kalender Kesehatan -->
+                <div class="feature-card" onclick="openModal('calendarModal')">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD0 100%);">
+                        <span style="font-size: 3.5rem;">📅</span>
+                    </div>
+                    <h3>Kalender Kesehatan</h3>
+                    <p>Kalender menstruasi, kehamilan, dan jadwal kontrol kesehatan</p>
+                    <ul class="feature-list">
+                        <li>Tracker Siklus Menstruasi</li>
+                        <li>Kalender Kehamilan</li>
+                        <li>Reminder Kontrol</li>
+                        <li>Prediksi Masa Subur</li>
+                        <li>Catatan Harian Kesehatan</li>
+                    </ul>
+                    <button class="btn-feature">
+                        <i class="fas fa-arrow-right"></i> Buka Kalender
+                    </button>
+                </div>
+            </div>
+
+            <!-- Coin Reward Info -->
+            <div style="margin-top: 4rem; text-align: center; background: var(--gradient-light); padding: 3rem; border-radius: 30px;">
+                <h3 style="font-size: 2rem; color: var(--dark-blue); margin-bottom: 1rem;">
+                    <i class="fas fa-coins" style="color: #FFD700;"></i> Sistem Koin Reward MAMA
+                </h3>
+                <p style="font-size: 1.1rem; color: #666; margin-bottom: 2rem;">
+                    Dapatkan koin dari setiap aktivitas dan tukarkan untuk belanja di MAMA Store!
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto;">
+                    <div style="background: #fff; padding: 1.5rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎯</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-pink); margin-bottom: 0.3rem;">10 Koin</div>
+                        <div style="color: #666;">Login Harian</div>
+                    </div>
+                    <div style="background: #fff; padding: 1.5rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-blue); margin-bottom: 0.3rem;">20 Koin</div>
+                        <div style="color: #666;">Update Data Bayi</div>
+                    </div>
+                    <div style="background: #fff; padding: 1.5rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎮</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-pink); margin-bottom: 0.3rem;">50 Koin</div>
+                        <div style="color: #666;">Main Games</div>
+                    </div>
+                    <div style="background: #fff; padding: 1.5rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭐</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-blue); margin-bottom: 0.3rem;">30 Koin</div>
+                        <div style="color: #666;">Review Produk</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Section -->
+    <section class="store" id="store">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">🛍️ MAMA Store</div>
+                <h2 class="section-title">Belanja & Sewa Perlengkapan Bayi</h2>
+                <p class="section-subtitle">
+                    Produk berkualitas dengan harga terjangkau dan sistem pembayaran koin reward
+                </p>
+            </div>
+
+            <div class="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image" style="background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);">
+                        🚼
+                        <div class="product-badge">Bisa Sewa</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Perlengkapan Bayi</div>
+                        <h4>Stroller Premium 3in1</h4>
+                        <div class="product-rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span style="color: #999;">(4.9 • 250 ulasan)</span>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">Stroller multifungsi dengan 3 mode penggunaan untuk kenyamanan maksimal bayi Anda</p>
+                        <div class="product-price">
+                            <div class="price-tag">Rp 1.500.000</div>
+                            <div class="price-coins">
+                                <i class="fas fa-coins"></i> 500 Koin
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn-feature" style="flex: 1;">
+                                <i class="fas fa-shopping-cart"></i> Beli
+                            </button>
+                            <button class="btn-feature" style="flex: 1; background: var(--light-blue);">
+                                <i class="fas fa-clock"></i> Sewa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image" style="background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);">
+                        🍼
+                        <div class="product-badge">Best Seller</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">MPASI</div>
+                        <h4>Paket MPASI Organik</h4>
+                        <div class="product-rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span style="color: #999;">(5.0 • 500 ulasan)</span>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">Menu MPASI sehat dan bergizi, dibuat dari bahan organik pilihan untuk bayi 6-12 bulan</p>
+                        <div class="product-price">
+                            <div class="price-tag">Rp 75.000</div>
+                            <div class="price-coins">
+                                <i class="fas fa-coins"></i> 25 Koin
+                            </div>
+                        </div>
+                        <button class="btn-feature" style="width: 100%;">
+                            <i class="fas fa-shopping-cart"></i> Beli Sekarang
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image" style="background: linear-gradient(135deg, #A8E6CF 0%, #56AB91 100%);">
+                        👕
+                        <div class="product-badge">New</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Fashion Bayi</div>
+                        <h4>Set Pakaian Bayi Premium</h4>
+                        <div class="product-rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span style="color: #999;">(4.8 • 180 ulasan)</span>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">Set lengkap pakaian bayi 0-6 bulan dari bahan katun lembut dan adem</p>
+                        <div class="product-price">
+                            <div class="price-tag">Rp 150.000</div>
+                            <div class="price-coins">
+                                <i class="fas fa-coins"></i> 50 Koin
+                            </div>
+                        </div>
+                        <button class="btn-feature" style="width: 100%;">
+                            <i class="fas fa-shopping-cart"></i> Beli Sekarang
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image" style="background: linear-gradient(135deg, #FFD93D 0%, #F4A460 100%);">
+                        🛏️
+                        <div class="product-badge">Bisa Sewa</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Furniture</div>
+                        <h4>Baby Box Kayu Jati</h4>
+                        <div class="product-rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span style="color: #999;">(4.9 • 320 ulasan)</span>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">Baby box kayu jati berkualitas tinggi dengan desain aman dan nyaman untuk bayi</p>
+                        <div class="product-price">
+                            <div class="price-tag">Rp 2.000.000</div>
+                            <div class="price-coins">
+                                <i class="fas fa-coins"></i> 100/bln
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn-feature" style="flex: 1;">
+                                <i class="fas fa-shopping-cart"></i> Beli
+                            </button>
+                            <button class="btn-feature" style="flex: 1; background: var(--light-blue);">
+                                <i class="fas fa-clock"></i> Sewa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#" class="btn btn-primary" style="display: inline-flex;">
+                    <i class="fas fa-store"></i> Lihat Semua Produk
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="community" id="komunitas">
+        <div class="container">
+            <div class="community-grid">
+                <div>
+                    <div class="section-header" style="text-align: left;">
+                        <div class="section-badge">👥 Komunitas</div>
+                        <h2 class="section-title">Bergabung dengan Komunitas Ibu</h2>
+                        <p class="section-subtitle" style="margin: 0;">
+                            Berbagi pengalaman, tips, dan resep MPASI dengan ribuan ibu lainnya
+                        </p>
+                    </div>
+
+                    <div class="testimonial">
+                        <div class="testimonial-header">
+                            <div class="avatar">👩</div>
+                            <div class="testimonial-info">
+                                <h5>Sarah Amelia</h5>
+                                <p>Ibu dari Aqila (8 bulan)</p>
+                            </div>
+                        </div>
+                        <p style="color: #666; line-height: 1.8;">
+                            "MAMA sangat membantu saya dalam memberikan MPASI yang tepat untuk Aqila. 
+                            Resepnya lengkap dan mudah diikuti. Komunitas ibu-ibunya juga sangat supportive!"
+                        </p>
+                        <div style="color: #FFD700;">⭐⭐⭐⭐⭐</div>
+                    </div>
+
+                    <div class="testimonial">
+                        <div class="testimonial-header">
+                            <div class="avatar">👩‍🦱</div>
+                            <div class="testimonial-info">
+                                <h5>Rina Wijaya</h5>
+                                <p>Ibu dari Keisha (1 tahun)</p>
+                            </div>
+                        </div>
+                        <p style="color: #666; line-height: 1.8;">
+                            "Fitur konsultasi online sangat membantu! Saya bisa langsung tanya dokter 
+                            kapan saja tanpa harus antri di klinik. Terima kasih MAMA! ❤️"
+                        </p>
+                        <div style="color: #FFD700;">⭐⭐⭐⭐⭐</div>
+                    </div>
+
+                    <a href="#" class="btn btn-primary" onclick="openModal('communityModal')">
+                        <i class="fas fa-users"></i> Gabung Komunitas
+                    </a>
+                </div>
+
+                <div class="community-image">
+                    👨‍👩‍👧‍👦
+                    <div class="floating-element element-1" style="font-size: 2rem;">💕</div>
+                    <div class="floating-element element-2" style="font-size: 2rem;">🎉</div>
+                    <div class="floating-element element-3" style="font-size: 2rem;">🌟</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="tentang">
+        <div class="about-content">
+            <div>
+                <div style="font-size: 10rem; opacity: 0.2;">❤️</div>
+            </div>
+            <div class="about-text">
+                <h2>Tentang MAMA</h2>
+                <p>
+                    MAMA (Mobile Assistant for Mothers and Babies) adalah platform kesehatan digital 
+                    inovatif yang dirancang khusus untuk mendampingi perjalanan ibu mulai dari masa 
+                    menstruasi, kehamilan, hingga merawat dan membesarkan buah hati.
+                </p>
+                <p>
+                    Dengan menggabungkan teknologi AI, konsultasi online, marketplace, edukasi interaktif, 
+                    dan sistem reward koin, kami berkomitmen memberikan pengalaman terbaik dalam 
+                    menjaga kesehatan ibu dan bayi di Indonesia.
+                </p>
+
+                <div class="founder-card">
+                    <h4>
+                        <i class="fas fa-user-graduate"></i> Pencetus & Pengembang
+                    </h4>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <strong>Nur Hazizah, S.K.M</strong>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div>Universitas Teuku Umar</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>087735483646</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>nurhazizah@utu.ac.id</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <a href="#" class="btn btn-primary" style="background: #fff; color: var(--primary-pink);">
+                        <i class="fas fa-info-circle"></i> Pelajari Lebih Lanjut
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>MAMA Platform</h3>
+                <p>
+                    Mobile Assistant for Mothers and Babies - Pendamping digital terpercaya 
+                    untuk kesehatan ibu dan bayi dengan teknologi AI terkini.
+                </p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Fitur Utama</h4>
+                <ul>
+                    <li><a href="#">Skrining Kesehatan</a></li>
+                    <li><a href="#">Konsultasi Online</a></li>
+                    <li><a href="#">MAMA Store</a></li>
+                    <li><a href="#">MPASI & Resep</a></li>
+                    <li><a href="#">Games Edukatif</a></li>
+                    <li><a href="#">AI Assistant</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Informasi</h4>
+                <ul>
+                    <li><a href="#">Tentang Kami</a></li>
+                    <li><a href="#">Cara Kerja</a></li>
+                    <li><a href="#">Blog Kesehatan</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Syarat & Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Hubungi Kami</h4>
+                <ul>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Universitas Teuku Umar</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Aceh Barat, Indonesia</a></li>
+                    <li><a href="tel:087735483646"><i class="fas fa-phone"></i> 087735483646</a></li>
+                    <li><a href="mailto:nurhazizah@utu.ac.id"><i class="fas fa-envelope"></i> nurhazizah@utu.ac.id</a></li>
+                    <li><a href="#"><i class="fas fa-headset"></i> Customer Service 24/7</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>
+                &copy; 2024 MAMA Platform - Mobile Assistant for Mothers and Babies<br>
+                Dikembangkan oleh <strong>Nur Hazizah, S.K.M</strong> - Universitas Teuku Umar
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-sign-in-alt"></i> Masuk ke MAMA</h2>
+                <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form style="max-width: 500px; margin: 0 auto;">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-blue);">Email atau No. HP</label>
+                        <input type="text" placeholder="Masukkan email atau nomor HP" style="width: 100%; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 15px; font-size: 1rem; transition: all 0.3s;" onfocus="this.style.borderColor='var(--primary-pink)'">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-blue);">Password</label>
+                        <input type="password" placeholder="Masukkan password" style="width: 100%; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 15px; font-size: 1rem;" onfocus="this.style.borderColor='var(--primary-blue)'">
+                    </div>
+                    <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox">
+                            <span>Ingat saya</span>
+                        </label>
+                        <a href="#" style="color: var(--primary-pink); font-weight: 600; text-decoration: none;">Lupa password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                        <i class="fas fa-sign-in-alt"></i> Masuk
+                    </button>
+                    <div style="text-align: center; color: #999; margin: 1.5rem 0;">atau masuk dengan</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <button type="button" style="padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 15px; background: #fff; cursor: pointer; font-weight: 600;">
+                            <i class="fab fa-google" style="color: #DB4437;"></i> Google
+                        </button>
+                        <button type="button" style="padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 15px; background: #fff; cursor: pointer; font-weight: 600;">
+                            <i class="fab fa-facebook" style="color: #4267B2;"></i> Facebook
+                        </button>
+                    </div>
+                    <p style="text-align: center; color: #666;">
+                        Belum punya akun? <a href="#" style="color: var(--primary-pink); font-weight: 700; text-decoration: none;">Daftar Sekarang</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screening Modal -->
+    <div id="screeningModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-clipboard-check"></i> Skrining Kesehatan</h2>
+                <span class="close" onclick="closeModal('screeningModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div style="background: var(--gradient-light); padding: 2rem; border-radius: 20px; text-align: center;">
+                        <div style="font-size: 5rem; margin-bottom: 1rem;">🤰</div>
+                        <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">Skrining Ibu Hamil</h3>
+                        <ul style="list-style: none; padding: 0; text-align: left; margin-bottom: 1.5rem;">
+                            <li style="padding: 0.5rem 0;">✓ Pemeriksaan tekanan darah</li>
+                            <li style="padding: 0.5rem 0;">✓ Cek kadar gula darah</li>
+                            <li style="padding: 0.5rem 0;">✓ Tes urine lengkap</li>
+                            <li style="padding: 0.5rem 0;">✓ Tinggi fundus uteri</li>
+                            <li style="padding: 0.5rem 0;">✓ Deteksi komplikasi dini</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-play"></i> Mulai Skrining
+                        </button>
+                    </div>
+
+                    <div style="background: var(--gradient-light); padding: 2rem; border-radius: 20px; text-align: center;">
+                        <div style="font-size: 5rem; margin-bottom: 1rem;">👶</div>
+                        <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">Skrining Bayi & Anak</h3>
+                        <ul style="list-style: none; padding: 0; text-align: left; margin-bottom: 1.5rem;">
+                            <li style="padding: 0.5rem 0;">✓ Pemantauan TB, BB, LK</li>
+                            <li style="padding: 0.5rem 0;">✓ Deteksi dini stunting</li>
+                            <li style="padding: 0.5rem 0;">✓ Skrining perkembangan motorik</li>
+                            <li style="padding: 0.5rem 0;">✓ Evaluasi status gizi</li>
+                            <li style="padding: 0.5rem 0;">✓ Kelengkapan imunisasi</li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-play"></i> Mulai Skrining
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consult Modal -->
+    <div id="consultModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-comments"></i> Konsultasi Online</h2>
+                <span class="close" onclick="closeModal('consultModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                    <div style="background: var(--light-pink); padding: 2rem; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">👨‍⚕️</div>
+                        <h4 style="color: var(--dark-blue); margin-bottom: 0.5rem;">Dokter Spesialis</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Konsultasi dengan dokter kandungan & anak</p>
+                        <button class="btn btn-primary" style="width: 100%;">Mulai Chat</button>
+                    </div>
+
+                    <div style="background: var(--light-blue); padding: 2rem; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">👩‍⚕️</div>
+                        <h4 style="color: var(--dark-blue); margin-bottom: 0.5rem;">Bidan</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Chat dengan bidan berpengalaman</p>
+                        <button class="btn btn-primary" style="width: 100%;">Mulai Chat</button>
+                    </div>
+
+                    <div style="background: #FFF9C4; padding: 2rem; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🥗</div>
+                        <h4 style="color: var(--dark-blue); margin-bottom: 0.5rem;">Ahli Gizi</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Konsultasi nutrisi ibu & bayi</p>
+                        <button class="btn btn-primary" style="width: 100%;">Mulai Chat</button>
+                    </div>
+                </div>
+
+                <div style="background: var(--gradient-light); padding: 2rem; border-radius: 20px; margin-top: 2rem;">
+                    <h4 style="color: var(--dark-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-clock"></i> Jam Layanan
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <p><strong>Chat:</strong> 24/7</p>
+                            <p><strong>Video Call:</strong> 08:00 - 21:00 WIB</p>
+                        </div>
+                        <div>
+                            <p><strong>Response time:</strong> &lt; 5 menit</p>
+                            <p><strong>Biaya:</strong> Gratis dengan koin</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MPASI Modal -->
+    <div id="mpasiModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-utensils"></i> MPASI & Komunitas</h2>
+                <span class="close" onclick="closeModal('mpasiModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div style="background: var(--gradient-light); padding: 2rem; border-radius: 20px;">
+                        <h3 style="color: var(--dark-blue); margin-bottom: 1.5rem;">
+                            <i class="fas fa-book-open"></i> Resep MPASI
+                        </h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 0.8rem; background: #fff; border-radius: 10px; margin-bottom: 0.8rem; cursor: pointer;">
+                                <strong>6 Bulan:</strong> Puree Buah & Sayur
+                            </li>
+                            <li style="padding: 0.8rem; background: #fff; border-radius: 10px; margin-bottom: 0.8rem; cursor: pointer;">
+                                <strong>7-8 Bulan:</strong> Bubur Saring
+                            </li>
+                            <li style="padding: 0.8rem; background: #fff; border-radius: 10px; margin-bottom: 0.8rem; cursor: pointer;">
+                                <strong>9-11 Bulan:</strong> Makanan Cincang
+                            </li>
+                            <li style="padding: 0.8rem; background: #fff; border-radius: 10px; cursor: pointer;">
+                                <strong>12+ Bulan:</strong> Makanan Keluarga
+                            </li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            Lihat Semua Resep
+                        </button>
+                    </div>
+
+                    <div style="background: var(--gradient-light); padding: 2rem; border-radius: 20px;">
+                        <h3 style="color: var(--dark-blue); margin-bottom: 1.5rem;">
+                            <i class="fas fa-users"></i> Forum Komunitas
+                        </h3>
+                        <div style="background: #fff; padding: 1.2rem; border-radius: 10px; margin-bottom: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+                                <div style="width: 35px; height: 35px; background: var(--gradient-pink-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff;">S</div>
+                                <strong>Sarah</strong>
+                            </div>
+                            <p style="color: #666; font-size: 0.9rem;">Tips MPASI 6 bulan pertama yang berhasil untuk bayi saya...</p>
+                            <div style="color: #999; font-size: 0.8rem; margin-top: 0.5rem;">
+                                <i class="fas fa-heart"></i> 245 • <i class="fas fa-comment"></i> 67
+                            </div>
+                        </div>
+                        <div style="background: #fff; padding: 1.2rem; border-radius: 10px;">
+                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+                                <div style="width: 35px; height: 35px; background: var(--gradient-pink-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff;">R</div>
+                                <strong>Rina</strong>
+                            </div>
+                            <p style="color: #666; font-size: 0.9rem;">Cara mengatasi GTM (Gerakan Tutup Mulut) pada bayi...</p>
+                            <div style="color: #999; font-size: 0.8rem; margin-top: 0.5rem;">
+                                <i class="fas fa-heart"></i> 189 • <i class="fas fa-comment"></i> 45
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            Gabung Forum
+                        </button>
+                    </div>
+                </div>
+
+                <div style="background: #FFF9E6; padding: 2rem; border-radius: 20px; text-align: center;">
+                    <h4 style="color: #FF6B9D; margin-bottom: 1rem;">
+                        <i class="fas fa-store"></i> MPASI Store
+                    </h4>
+                    <p style="color: #666;">Beli makanan bayi siap saji berkualitas atau jual resep MPASI Anda!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Games Modal -->
+    <div id="gamesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-gamepad"></i> Games & Audio Edukatif</h2>
+                <span class="close" onclick="closeModal('gamesModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 15px; text-align: center; cursor: pointer;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🧩</div>
+                        <h4 style="margin-bottom: 0.5rem;">Puzzle Bayi</h4>
+                        <p style="color: #666; font-size: 0.85rem;">Stimulasi motorik halus</p>
+                        <div style="color: #FFD700; margin: 0.5rem 0;">+50 Koin</div>
+                        <button class="btn-feature">Main</button>
+                    </div>
+
+                    <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 15px; text-align: center; cursor: pointer;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🎨</div>
+                        <h4 style="margin-bottom: 0.5rem;">Warna & Bentuk</h4>
+                        <p style="color: #666; font-size: 0.85rem;">Pengenalan warna</p>
+                        <div style="color: #FFD700; margin: 0.5rem 0;">+40 Koin</div>
+                        <button class="btn-feature">Main</button>
+                    </div>
+
+                    <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 15px; text-align: center; cursor: pointer;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🎵</div>
+                        <h4 style="margin-bottom: 0.5rem;">Lagu Anak</h4>
+                        <p style="color: #666; font-size: 0.85rem;">Musik edukatif</p>
+                        <div style="color: #FFD700; margin: 0.5rem 0;">+30 Koin</div>
+                        <button class="btn-feature">Dengar</button>
+                    </div>
+
+                    <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 15px; text-align: center; cursor: pointer;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📖</div>
+                        <h4 style="margin-bottom: 0.5rem;">Dongeng</h4>
+                        <p style="color: #666; font-size: 0.85rem;">Audio cerita anak</p>
+                        <div style="color: #FFD700; margin: 0.5rem 0;">+35 Koin</div>
+                        <button class="btn-feature">Dengar</button>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); padding: 1.5rem; border-radius: 15px; text-align: center; cursor: pointer;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🕌</div>
+                        <h4 style="margin-bottom: 0.5rem;">Murotal Qur'an</h4>
+                        <p style="color: #666; font-size: 0.85rem;">Bacaan merdu</p>
+                        <div style="color: #FFD700; margin: 0.5rem 0;">+45 Koin</div>
+                        <button class="btn-feature">Putar</button>
+                    </div>
+
+                    <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 15px; text-align: center; cursor: pointer;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🎼</div>
+                        <h4 style="margin-bottom: 0.5rem;">Musik Klasik</h4>
+                        <p style="color: #666; font-size: 0.85rem;">Mozart untuk bayi</p>
+                        <div style="color: #FFD700; margin: 0.5rem 0;">+40 Koin</div>
+                        <button class="btn-feature">Putar</button>
+                    </div>
+                </div>
+
+                <div style="background: #FFF9E6; padding: 1.5rem; border-radius: 15px; text-align: center;">
+                    <h4 style="color: var(--primary-pink); margin-bottom: 0.5rem;">
+                        <i class="fas fa-trophy"></i> Total Koin Anda: <span id="modalCoins">1,250</span>
+                    </h4>
+                    <p style="color: #666;">Kumpulkan lebih banyak koin untuk belanja di MAMA Store!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Modal -->
+    <div id="aiModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-robot"></i> AI Assistant MAMA</h2>
+                <span class="close" onclick="closeModal('aiModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="background: var(--gradient-light); padding: 2rem; border-radius: 20px; margin-bottom: 2rem; max-height: 400px; overflow-y: auto;">
+                    <div style="background: #fff; padding: 1.2rem; border-radius: 15px; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
+                            <div style="width: 40px; height: 40px; background: var(--gradient-pink-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🤖</div>
+                            <strong>AI MAMA</strong>
+                        </div>
+                        <p style="color: #666;">Halo! Saya AI Assistant MAMA. Saya siap membantu Anda mencari informasi tentang kesehatan ibu dan bayi. Ada yang bisa saya bantu?</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.8rem; margin-bottom: 2rem;">
+                    <input type="text" placeholder="Tanyakan tentang kesehatan ibu dan bayi..." style="flex: 1; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 15px; font-size: 1rem;">
+                    <button class="btn btn-primary" style="padding: 1rem 2rem;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+
+                <div>
+                    <h4 style="margin-bottom: 1rem; color: var(--dark-blue);">
+                        <i class="fas fa-fire"></i> Topik Populer
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <button class="btn-feature" onclick="askAI('MPASI 6 bulan')">
+                            <i class="fas fa-utensils"></i> MPASI 6 Bulan
+                        </button>
+                        <button class="btn-feature" onclick="askAI('Imunisasi')">
+                            <i class="fas fa-syringe"></i> Jadwal Imunisasi
+                        </button>
+                        <button class="btn-feature" onclick="askAI('Gizi Ibu Hamil')">
+                            <i class="fas fa-apple-alt"></i> Gizi Ibu Hamil
+                        </button>
+                        <button class="btn-feature" onclick="askAI('ASI Eksklusif')">
+                            <i class="fas fa-baby"></i> ASI Eksklusif
+                        </button>
+                    </div>
+                </div>
+
+                <div style="background: #E3F2FD; padding: 1.5rem; border-radius: 15px; margin-top: 2rem;">
+                    <h4 style="color: var(--primary-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-video"></i> Video Edukasi Terbaru
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div style="background: #fff; padding: 1rem; border-radius: 10px;">
+                            <div style="background: var(--gradient-pink-blue); height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 0.8rem;">
+                                ▶️
+                            </div>
+                            <strong style="font-size: 0.9rem;">Cara Menyusui yang Benar</strong>
+                            <p style="color: #999; font-size: 0.8rem;">Dr. Sarah • 15:30</p>
+                        </div>
+                        <div style="background: #fff; padding: 1rem; border-radius: 10px;">
+                            <div style="background: var(--gradient-pink-blue); height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 0.8rem;">
+                                ▶️
+                            </div>
+                            <strong style="font-size: 0.9rem;">Stimulasi Bayi 0-6 Bulan</strong>
+                            <p style="color: #999; font-size: 0.8rem;">Dr. Rina • 12:45</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biodata Modal -->
+    <div id="biodataModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-baby"></i> Biodata & Monitoring Bayi</h2>
+                <span class="close" onclick="closeModal('biodataModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Nama Bayi</label>
+                            <input type="text" placeholder="Nama lengkap bayi" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 10px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Tanggal Lahir</label>
+                            <input type="date" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 10px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Jenis Kelamin</label>
+                            <select style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 10px;">
+                                <option>Pilih jenis kelamin</option>
+                                <option>Laki-laki</option>
+                                <option>Perempuan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Berat Badan (kg)</label>
+                            <input type="number" step="0.1" placeholder="Contoh: 7.5" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 10px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Tinggi Badan (cm)</label>
+                            <input type="number" step="0.1" placeholder="Contoh: 68" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 10px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Lingkar Kepala (cm)</label>
+                            <input type="number" step="0.1" placeholder="Contoh: 42" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 10px;">
+                        </div>
+                    </div>
+
+                    <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 15px; margin: 1.5rem 0;">
+                        <h4 style="margin-bottom: 1rem; color: var(--dark-blue);">Status Gizi: <span style="color: var(--primary-pink);">Normal</span></h4>
+                        <p style="color: #666; font-size: 0.9rem;">Berdasarkan data yang diinput, status gizi bayi Anda dalam kategori normal sesuai standar WHO.</p>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="margin-bottom: 1rem; color: var(--dark-blue);">
+                            <i class="fas fa-syringe"></i> Riwayat Imunisasi
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem; background: var(--light-pink); border-radius: 10px;">
+                                <input type="checkbox" checked>
+                                <span>Hepatitis B</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem; background: var(--light-blue); border-radius: 10px;">
+                                <input type="checkbox" checked>
+                                <span>BCG</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem; background: var(--light-pink); border-radius: 10px;">
+                                <input type="checkbox">
+                                <span>DPT 1</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem; background: var(--light-blue); border-radius: 10px;">
+                                <input type="checkbox">
+                                <span>Polio 1</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem; background: var(--light-pink); border-radius: 10px;">
+                                <input type="checkbox">
+                                <span>Campak</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem; background: var(--light-blue); border-radius: 10px;">
+                                <input type="checkbox">
+                                <span>MMR</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-save"></i> Simpan Data (+20 Koin)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Modal -->
+    <div id="calendarModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-alt"></i> Kalender Kesehatan</h2>
+                <span class="close" onclick="closeModal('calendarModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h3 style="color: var(--primary-pink); margin-bottom: 1rem;">
+                            <i class="fas fa-calendar-check"></i> Kalender Menstruasi
+                        </h3>
+                        <div style="background: var(--light-pink); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem;">
+                            <p><strong>Siklus Terakhir:</strong> 12 Des 2024</p>
+                            <p><strong>Prediksi Berikutnya:</strong> 9 Jan 2025</p>
+                            <p><strong>Masa Subur:</strong> 23-27 Des 2024</p>
+                        </div>
+                        <button class="btn-feature" style="width: 100%;">
+                            <i class="fas fa-plus"></i> Catat Menstruasi
+                        </button>
+                    </div>
+
+                    <div>
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">
+                            <i class="fas fa-baby-carriage"></i> Kalender Kehamilan
+                        </h3>
+                        <div style="background: var(--light-blue); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem;">
+                            <p><strong>Usia Kehamilan:</strong> 24 Minggu</p>
+                            <p><strong>Trimester:</strong> Kedua</p>
+                            <p><strong>HPL:</strong> 15 April 2025</p>
+                        </div>
+                        <button class="btn-feature" style="width: 100%;">
+                            <i class="fas fa-heartbeat"></i> Update Kehamilan
+                        </button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-bell"></i> Reminder Jadwal
+                    </h3>
+                    <div style="background: #FFF9E6; padding: 1.5rem; border-radius: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: #fff; border-radius: 10px; margin-bottom: 0.8rem;">
+                            <div>
+                                <strong>Kontrol Kehamilan</strong>
+                                <p style="color: #999; font-size: 0.85rem;">20 Desember 2024 • 09:00</p>
+                            </div>
+                            <i class="fas fa-bell" style="color: var(--primary-pink); font-size: 1.5rem;"></i>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: #fff; border-radius: 10px;">
+                            <div>
+                                <strong>Imunisasi Bayi</strong>
+                                <p style="color: #999; font-size: 0.85rem;">22 Desember 2024 • 10:00</p>
+                            </div>
+                            <i class="fas fa-bell" style="color: var(--primary-blue); font-size: 1.5rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community Modal -->
+    <div id="communityModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-users"></i> Komunitas MAMA</h2>
+                <span class="close" onclick="closeModal('communityModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">Bergabunglah dengan 50,000+ Ibu di Indonesia</h3>
+                    <p style="color: #666;">Berbagi pengalaman, tips, dan dukungan dengan sesama ibu</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="background: var(--light-pink); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.8rem;">💬</div>
+                        <h4>Forum Diskusi</h4>
+                        <p style="color: #666; font-size: 0.9rem;">Tanya jawab dengan ibu lain</p>
+                    </div>
+                    <div style="background: var(--light-blue); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.8rem;">📸</div>
+                        <h4>Galeri Moments</h4>
+                        <p style="color: #666; font-size: 0.9rem;">Share momen bersama bayi</p>
+                    </div>
+                    <div style="background: #FFF9C4; padding: 1.5rem; border-radius: 15px; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.8rem;">🍽️</div>
+                        <h4>Resep MPASI</h4>
+                        <p style="color: #666; font-size: 0.9rem;">Koleksi resep dari ibu-ibu</p>
+                    </div>
+                </div>
+
+                <div style="background: var(--gradient-light); padding: 2rem; border-radius: 15px;">
+                    <h4 style="margin-bottom: 1rem; color: var(--dark-blue);">Topik Trending Hari Ini:</h4>
+                    <div style="background: #fff; padding: 1.2rem; border-radius: 10px; margin-bottom: 1rem;">
+                        <strong>Tips MPASI 6 Bulan Pertama yang Mudah</strong>
+                        <p style="color: #999; font-size: 0.85rem; margin-top: 0.3rem;">
+                            <i class="fas fa-user"></i> Bu Sarah • <i class="fas fa-heart"></i> 1.2k suka • <i class="fas fa-comment"></i> 345 komentar
+                        </p>
+                    </div>
+                    <div style="background: #fff; padding: 1.2rem; border-radius: 10px; margin-bottom: 1rem;">
+                        <strong>Cara Mengatasi GTM (Gerakan Tutup Mulut)</strong>
+                        <p style="color: #999; font-size: 0.85rem; margin-top: 0.3rem;">
+                            <i class="fas fa-user"></i> Bu Rina • <i class="fas fa-heart"></i> 856 suka • <i class="fas fa-comment"></i> 234 komentar
+                        </p>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-sign-in-alt"></i> Gabung Komunitas Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Smooth scroll
+        function scrollTo(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        // Close mobile menu if open
+                        const navLinks = document.getElementById('navLinks');
+                        navLinks.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Coin system
+        let coins = 1250;
+        function addCoins(amount) {
+            coins += amount;
+            document.getElementById('userCoins').textContent = coins.toLocaleString();
+            const modalCoins = document.getElementById('modalCoins');
+            if (modalCoins) {
+                modalCoins.textContent = coins.toLocaleString();
+            }
+        }
+
+        // Simulate coin earning
+        let scrollCount = 0;
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop) {
+                scrollCount++;
+                if (scrollCount >= 150) {
+                    addCoins(5);
+                    scrollCount = 0;
+                    showNotification('+5 Koin dari aktivitas scroll! 🎉');
+                }
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: linear-gradient(135deg, #FF6B9D 0%, #4A90E2 100%);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 15px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        // AI Ask function
+        function askAI(topic) {
+            showNotification('AI sedang mencari informasi tentang ' + topic + '...');
+            addCoins(10);
+        }
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements
+        document.querySelectorAll('.feature-card, .product-card, .testimonial').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            observer.observe(el);
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Simulate login after page load
+        setTimeout(() => {
+            console.log('🎉 Website MAMA siap digunakan!');
+            console.log('📱 Fitur: Skrining, Konsultasi, Store, MPASI, Games, AI');
+            console.log('👶 Selamat datang di MAMA Platform!');
+        }, 1000);
+    </script>
+</body>
+</html>
